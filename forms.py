@@ -13,8 +13,8 @@ class Criar_ensaio(FlaskForm):
     pobre = FloatField('pobre')
     cp = FloatField('cp')
     pesobrita = FloatField('pesobrita')
-    slump = FloatField('slump')
-    umidade = FloatField('umidade')
+    slump = FloatField('slump (mm)')
+    umidade = FloatField('umidade (%)')
 
     submit = SubmitField('Registrar')
 
@@ -22,4 +22,4 @@ class Alfa(FlaskForm):
     alfa = FloatField('Alfa:')
     submit = SubmitField('Registrar')
 
-    
+
