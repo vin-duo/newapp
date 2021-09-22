@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 
 #para o db 333
 from flask_sqlalchemy import SQLAlchemy
@@ -106,54 +106,121 @@ def editar_ensaio(id):
 
 
 
+
+
 @app.route('/dosagem/<int:id>', methods=['POST', 'GET'])
 def dosagem(id):
     form = Alfa()
 
     ensaio_salvo = Ensaios.query.filter_by(id=id).first()
     dosagens_do_ensaio_salvo = ensaio_salvo.dosagem_piloto
-
+    print(dosagens_do_ensaio_salvo)
     m = ensaio_salvo.piloto
     cp = ensaio_salvo.cp
-    alfa = form.alfa.data
     pesobrita = ensaio_salvo.pesobrita
     slump = ensaio_salvo.slump
     umidade = ensaio_salvo.umidade
 
+    if dosagens_do_ensaio_salvo == []:
+        print("pass")
+
+    else:
+        print('cai no else')
+
+        contador = 0
+        for i in dosagens_do_ensaio_salvo:
+
+            alfa = i.alfa
+            print("alfa dentro do for")
+            print(alfa)
+
+            if contador == 0:
+                alfaantigo = 0
+
+                print('to no alfaantigo = 0')
+                print(alfaantigo)
+                print(alfa)
+                print('saíndo desse if')
+            else:
+                alfaantigo = dosagens_do_ensaio_salvo[contador-1].alfa
+                print('else do for')
+
+            print("fora do laço")
+            print(m)
+            print(alfa)
+            print(alfaantigo)
+
+            traco = Ensaio(
+                m = m,
+                cp = cp,
+                alfa = alfa, 
+                pesobrita = pesobrita,
+                alfaantigo = alfaantigo,
+                umidade = umidade)
+
+            print("print da agua")
+            print(i.agua)
+
+            i.alfa = alfa
+            i.c_unitario = traco.massas_unitarias()[0]
+            i.a_unitario = traco.massas_unitarias()[1]
+            i.b_unitario = traco.massas_unitarias()[2]
+
+            i.c_massa = traco.massas_iniciais()[0]
+            i.a_massa = traco.massas_iniciais()[1]
+            i.b_massa = traco.massas_iniciais()[2]
+            
+            i.c_acr = traco.quantidades_adicionar()[0]
+            i.a_acr = traco.quantidades_adicionar()[1]
+            
+            i.ensaio = ensaio_salvo
+            db.session.commit()
+            contador = contador + 1
+            print("deu commit")
+
+        print("to esperando validate")
     if form.validate_on_submit():
-        if dosagens_do_ensaio_salvo == []:
-            alfaantigo = 0
-        else:
-            alfaantigo = dosagens_do_ensaio_salvo[-1].alfa
+        print('entrei no validate')
+        add_no_db = Dosagem_piloto(alfa=form.alfa.data, ensaio = ensaio_salvo)
 
-        traco = Ensaio(
-            m = m,
-            cp = cp,
-            alfa = form.alfa.data, 
-            pesobrita = pesobrita,
-            alfaantigo = alfaantigo,
-            umidade = umidade)
-
-        add_no_db = Dosagem_piloto(
-            alfa = form.alfa.data,
-            c_unitario = traco.massas_unitarias()[0],
-            a_unitario = traco.massas_unitarias()[1],
-            b_unitario = traco.massas_unitarias()[2],
-            
-            c_massa = traco.massas_iniciais()[0],
-            a_massa = traco.massas_iniciais()[1],
-            b_massa = traco.massas_iniciais()[2],
-            
-            c_acr = traco.quantidades_adicionar()[0],
-            a_acr = traco.quantidades_adicionar()[1],
-            
-            agua = 0,
-            ensaio = ensaio_salvo)
-        print(add_no_db)
         db.session.add(add_no_db)
         db.session.commit()
-        return redirect('/dosagem/{}'.format(id))
+        print("add_no_db dentro do validade")
+        print(add_no_db)
+        return redirect ('/dosagem/{}'.format(id))
+
+    print('to no final')
     return render_template("dosagem.html", form=form, id=id, dosagens_do_ensaio_salvo=dosagens_do_ensaio_salvo, m=m, slump=slump)
+
+
+
+
+
+@app.route("/agua", methods=["POST"])
+def update_agua():#o nome "valor_alfa" é o nome dado no html para um elemento na tabela do db. Quando cria uma linha no db, a tabela chama essa linha de "valor_alfa", que tem as propriedades "id", "alfa", "agua"......
+    i_id = request.form.get("i_id")
+    valor_agua_novo = request.form.get("valor_agua_novo")
+    nova_agua = Dosagem_piloto.query.filter_by(id=i_id).first()
+    nova_agua.agua = valor_agua_novo
+    db.session.commit()
+    a = nova_agua.ensaio.id
+    return redirect("/home".format(a))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -164,10 +231,7 @@ def dosagem_auxiliar(id):
     ensaio_salvo = Ensaios.query.filter_by(id=id).first()
     dosagens_do_ensaio_salvo_rico = ensaio_salvo.dosagem_rico
     dosagens_do_ensaio_salvo_pobre = ensaio_salvo.dosagem_pobre
-    print("dosagem rico")
-    print(dosagens_do_ensaio_salvo_rico)
-    print("dosagem pobre")
-    print(dosagens_do_ensaio_salvo_pobre)
+
     m_rico = ensaio_salvo.rico
     m_pobre = ensaio_salvo.pobre
     cp = ensaio_salvo.cp
@@ -206,7 +270,6 @@ def dosagem_auxiliar(id):
             agua = 0,
             ensaio = ensaio_salvo)
 
-
 #       Essa dosagem nao precisa de alfa antigo
 #        if dosagens_do_ensaio_salvo_pobre == []:
 #            alfaantigo = 0
@@ -234,7 +297,6 @@ def dosagem_auxiliar(id):
             
             agua = 0,
             ensaio = ensaio_salvo)
-
 
         if dosagens_do_ensaio_salvo_rico == []:
             db.session.add(add_no_db_rico)
