@@ -42,7 +42,7 @@
         <h4>Traço PILOTO<br>m: {{ m }}<br>Slump: {{ slump }} mm</h4>
 
 
-        <table class="table table-dark">
+        <table class="table table-dark table-hover table-bordered">
         <thead>
             <tr>
                 <th rowspan="2" class = "align-middle">Alfa</th>
@@ -75,12 +75,12 @@
             
             <td>{{ i.c_massa }}</td>
             <td>{{ i.a_massa }}</td>
-            <td>umida</td>
+            <td>{{ i.a_massa_umida }}</td>
             <td>{{ i.b_massa }}</td>
             
             <td>{{ i.c_acr }}</td>
             <td>{{ i.a_acr }}</td>
-            <td>agua</td>
+            <td>{{ i.umidade_agregado }}</td>
 
             <td><input type="hidden" value="{{ i.id }}" name="i_id">
             <input type="text" size="3" class="form-control-sm" value="{{ i.agua }}" name="valor_agua_novo"></td>

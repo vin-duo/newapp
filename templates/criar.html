@@ -10,28 +10,31 @@
         {{ form.hidden_tag() }}
     
         {{ form.nome.label }}<br>
-        {{ form.nome(size=3) }}<br>
+        {{ form.nome(size=15) }}<br>
 
         {{ form.piloto.label }}<br>
-        {{ form.piloto(size=3) }}<br>
+          1 : {{ form.piloto(size=1) }}<br>
 
         {{ form.rico.label }}<br>
-        {{ form.rico(size=3) }}<br>
+          1 : {{ form.rico(size=1) }}<br>
 
         {{ form.pobre.label }}<br>
-        {{ form.pobre(size=3) }}<br>
+          1 : {{ form.pobre(size=1) }}<br>
 
+<!--
         {{ form.cp.label }}<br>
         {{ form.cp(size=3) }}<br>
-
+-->
         {{ form.pesobrita.label }}<br>
         {{ form.pesobrita(size=3) }}<br>
 
         {{ form.slump.label }}<br>
         {{ form.slump(size=3) }}<br>
 
+<!--
         {{ form.umidade.label }}<br>
         {{ form.umidade(size=3) }}<br>
+-->
 
         {{ form.submit }}
     </form>

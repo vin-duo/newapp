@@ -9,10 +9,10 @@ das diferentes etapas para relizar os calculos necessarios para o ensaio de dosa
 class Ensaio():
     
     #Atribuir valores default nas variaveis do __init__ conforme sugestoes do Americo.
-    def __init__(self,m=5, cp=13.56, alfa=0, alfaantigo=0, agua=0, umidade=0, pesobrita=0, arredondamento=3):
+    def __init__(self,m=5, cp=13.56, alfa=0, alfaantigo=0, agua=0, umidade=0, pesobrita=0, arredondamento=2):
         self.m = m
         self.cp = cp
-        self.alfa = alfa
+        self.alfa = alfa/100
         self.agua = agua
         self.umidade = umidade
         self.pesobrita = pesobrita
@@ -57,8 +57,8 @@ class Ensaio():
     def umidade_agregado(self):
         fator_umidade = self.umidade/100
         areia_seca = self.massas_iniciais()[1]
-        areia_umida = areia_seca/(1-fator_umidade)
-        massa_de_agua = areia_umida - areia_seca
+        areia_umida = round(areia_seca/(1-fator_umidade), self.arredondamento)
+        massa_de_agua = round(areia_umida - areia_seca, self.arredondamento)
         return(areia_umida, massa_de_agua)
 
 

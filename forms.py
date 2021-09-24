@@ -8,11 +8,11 @@ from wtforms.validators import DataRequired
 
 class Criar_ensaio(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
-    piloto = FloatField('piloto')
-    rico = FloatField('rico')
-    pobre = FloatField('pobre')
+    piloto = FloatField('Traço Piloto')
+    rico = FloatField('Traço Rico')
+    pobre = FloatField('Traço Pobre')
     cp = FloatField('cp')
-    pesobrita = FloatField('pesobrita')
+    pesobrita = FloatField('Brita (kg)')
     slump = FloatField('slump (mm)')
     umidade = FloatField('umidade (%)')
 

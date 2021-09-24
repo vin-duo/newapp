@@ -172,7 +172,10 @@ def dosagem(id):
             
             i.c_acr = traco.quantidades_adicionar()[0]
             i.a_acr = traco.quantidades_adicionar()[1]
-            
+
+            i.a_massa_umida = traco.umidade_agregado()[0]
+            i.umidade_agregado = traco.umidade_agregado()[1]
+
             i.ensaio = ensaio_salvo
             db.session.commit()
             contador = contador + 1
@@ -495,17 +498,19 @@ class Dosagem_piloto(db.Model):
     
     c_massa = db.Column(db.Integer)
     a_massa = db.Column(db.Integer)
+
     b_massa = db.Column(db.Integer)
     
     c_acr = db.Column(db.Integer)
     a_acr= db.Column(db.Integer)
-    
+
+    a_massa_umida = db.Column(db.Integer)    
     umidade_agregado = db.Column(db.Integer)
     agua = db.Column(db.Integer)
 
     ensaio_id = db.Column(db.Integer, db.ForeignKey('ensaios.id'))
     def __repr__(self):
-        return '\n<id: {}, Piloto: {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, foreign: {}>'.format(self.id, self.alfa, self.c_unitario, self.a_unitario, self.b_unitario, self.c_massa, self.a_massa, self.b_massa, self.c_acr, self.a_acr, self.umidade_agregado, self.agua, self.ensaio_id)
+        return '\n<id: {}, Piloto: {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, foreign: {}>'.format(self.id, self.alfa, self.c_unitario, self.a_unitario, self.b_unitario, self.c_massa, self.a_massa, self.b_massa, self.c_acr, self.a_acr, self.a_massa_umida, self.umidade_agregado, self.agua, self.ensaio_id)
    
 
 class Dosagem_rico(db.Model):
@@ -523,11 +528,13 @@ class Dosagem_rico(db.Model):
     c_acr = db.Column(db.Integer)
     a_acr= db.Column(db.Integer)
     
+    a_massa_umida = db.Column(db.Integer)    
+    umidade_agregado = db.Column(db.Integer)
     agua = db.Column(db.Integer)
 
     ensaio_id = db.Column(db.Integer, db.ForeignKey('ensaios.id'))
     def __repr__(self):
-        return '\n<id: {}, Rico: {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, foreign: {}>'.format(self.id, self.alfa, self.c_unitario, self.a_unitario, self.b_unitario, self.c_massa, self.a_massa, self.b_massa, self.c_acr, self.a_acr, self.agua, self.ensaio_id)
+        return '\n<id: {}, Rico: {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, foreign: {}>'.format(self.id, self.alfa, self.c_unitario, self.a_unitario, self.b_unitario, self.c_massa, self.a_massa, self.b_massa, self.a_massa_umida, self.c_acr, self.a_acr, self.a_massa_umida, self.umidade_agregado, self.agua, self.ensaio_id)
    
 class Dosagem_pobre(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -544,11 +551,13 @@ class Dosagem_pobre(db.Model):
     c_acr = db.Column(db.Integer)
     a_acr= db.Column(db.Integer)
     
+    a_massa_umida = db.Column(db.Integer)    
+    umidade_agregado = db.Column(db.Integer)
     agua = db.Column(db.Integer)
 
     ensaio_id = db.Column(db.Integer, db.ForeignKey('ensaios.id'))
     def __repr__(self):
-        return '\n<id: {}, Pobre: {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, foreign: {}>'.format(self.id, self.alfa, self.c_unitario, self.a_unitario, self.b_unitario, self.c_massa, self.a_massa, self.b_massa, self.c_acr, self.a_acr, self.agua, self.ensaio_id)
+        return '\n<id: {}, Pobre: {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, foreign: {}>'.format(self.id, self.alfa, self.c_unitario, self.a_unitario, self.b_unitario, self.c_massa, self.a_massa, self.a_massa_umida, self.b_massa, self.c_acr, self.a_acr, self.a_massa_umida, self.umidade_agregado, self.agua, self.ensaio_id)
    
 
 
